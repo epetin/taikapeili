@@ -23,7 +23,7 @@ try:
     current_view = 0
     button_pressed = False
     retry_interval = 20
-    retry_count = 3
+    retry_count = 2
     button_pin = 11
     # TODO: Calculate based on sunrise/sunset
     night_hours = [19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6]
@@ -47,7 +47,7 @@ except Exception as e:
 def _print_debug(string):
     string = "[" + str(datetime.datetime.now()) + "] " + string
     print(string)
-    with open("/var/www/taikapeili/debug.log", "a") as dfile:
+    with open("/var/www/taikapeili/debug_new.log", "a") as dfile:
         dfile.write(string + "\n")
 
 def get_fmi_data():
@@ -59,13 +59,13 @@ def get_fmi_data():
     q_storedquery_id = "fmi::forecast::hirlam::surface::point::timevaluepair"
     q_latlon = "65.01236,25.46816"
     q_parameters = "Temperature,WeatherSymbol3"
-    query_url = "http://data.fmi.fi/fmi-apikey/{}/wfs?request=getFeature&" \
+    query_url = "https://opendata.fmi.fi/wfs?request=getFeature&" \
                 "storedquery_id={}&" \
                 "latlon={}&" \
                 "timestep={}&" \
                 "parameters={}&" \
                 "endtime={}Z" \
-                .format(fmi_apikey, q_storedquery_id, q_latlon, q_timestep,
+                .format(q_storedquery_id, q_latlon, q_timestep,
                         q_parameters, q_endtime)
     _print_debug("Query to send: {}".format(query_url))
 
